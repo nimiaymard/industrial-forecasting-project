@@ -1,0 +1,76 @@
+## Configuration du projet
+
+data:
+  raw_path: "C:/Users/user/Downloads/industrial-forecasting-project/data/raw/real.csv"
+  forecast: "C:/Users/user/Downloads/industrial-forecasting-project/data/processed/forecast_arima.csv"
+  forecast_path_prophet: "C:/Users/user/Downloads/industrial-forecasting-project/data/processed/forecast_prophet.csv"
+  processed_path: "C:/Users/user/Downloads/industrial-forecasting-project/data/processed/series_cleaned.csv"
+  #plot_output: "C:/Users/user/Downloads/industrial-forecasting-project/reports/figures/arima_forecast.png"
+  forecast_path_lstm: "C:/Users/user/Downloads/industrial-forecasting-project/data/processed/forecast_lstm.csv"
+  #plot_output_prophet: "C:/Users/user/Downloads/industrial-forecasting-project/reports/figures/forecast_prophet.png"
+  forecast_path_lstm: "C:/Users/user/Downloads/industrial-forecasting-project/data/processed/forecast_lstm.csv"
+  image_png_lstm: "C:/Users/user/Downloads/industrial-forecasting-project/reports/figures/forecast_lstm.png"
+  image_png_sarimax: "C:/Users/user/Downloads/industrial-forecasting-project/reports/figures/forecast_sarimax.png"
+  image_png_prophet: "C:/Users/user/Downloads/industrial-forecasting-project/reports/figures/forecast_prophet.png"
+
+  datetime_col: "timestamp"
+  value_col: "value"
+  freq: 'h'  # H, D, etc.
+  train_ratio: 0.8
+  
+
+visualization:
+  enabled: true
+  title: "Prévisions ARIMA"
+  xlabel: "Date"
+  ylabel: "Valeur"
+  figsize: [14, 6]
+  colors:
+    actual: "blue"
+    forecast: "orange"
+  save: true  # ajoute ceci pour activer l'enregistrement
+
+
+# arima:
+  #order: [1, 1, 1]
+  #seasonal_order: [0, 1, 1, 24]
+
+arima:
+  order: [2, 0, 3]
+  seasonal_order: [1, 1, 1, 24]
+
+lstm:
+  window_size: 24
+  hidden_size: 64
+  num_layers: 1
+  lr: 0.001
+  epochs: 20
+  batch_size: 64
+
+prophet:
+  
+  # CONFIGURATION ULTIME 
+  changepoint_prior_scale: 1.8     #  Dernier boost (1.2 → 1.8)
+  seasonality_prior_scale: 35.0     #  Dernier ajustement (30.0 → 35.0)
+  holidays_prior_scale: 25.0        #  Légère augmentation
+  changepoint_range: 0.99         #  Maximum (0.98 → 0.99)
+  seasonality_mode: multiplicative
+  daily_seasonality: True
+  weekly_seasonality: True
+  yearly_seasonality: True
+  # Note: Les saisonnalités personnalisées nécessitent un traitement spécial dans le code
+  # seasonalities:  # Cette partie peut nécessiter un traitement manuel dans le code Python
+  #   hourly:
+  #     period: 1
+  #     fourier_order: 5
+
+output:
+  model_path_prophet: "C:/Users/user/Downloads/industrial-forecasting-project/src/industrial_forecasting/models/prophet_model.pkl"
+  model_path: "C:/Users/user/Downloads/industrial-forecasting-project/src/industrial_forecasting/models/arima_model.pkl"
+  model_path_lstm: "C:/Users/user/Downloads/industrial-forecasting-project/src/industrial_forecasting/models/lstm_model.pkl"
+
+anomaly:
+  method: zscore         # zscore | isolation_forest | residual
+  zscore_threshold: 3.0
+  contamination: 0.01    # pour IsolationForest
+  residual_sigma: 3.0    # seuil k-sigma sur résidus

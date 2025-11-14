@@ -1,0 +1,54 @@
+# Environnements virtuels Python
+.venv/
+venv/
+env/
+.venv.bak/
+venv.bak/
+
+# Fichiers Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Données 
+data/
+
+# Modèles entraînés (si volumineux)
+models/
+
+# Cache et fichiers temporaires
+.cache
+.nox
+.tox
+.coverage
+.pytest_cache
+
+# Jupyter
+.ipynb_checkpoints
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
