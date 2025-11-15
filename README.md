@@ -29,7 +29,7 @@ prévision, détection d’anomalies, visualisation web et architecture modulair
   - intégrer facilement un futur backend Flask/FastAPI.
 
 ##  Arborescence
-
+```
 industrial-forecasting-project/
 ├── data/
 │   ├── raw/               # Données originales
@@ -73,6 +73,7 @@ industrial-forecasting-project/
 ├── requirements.txt
 ├── Makefile
 └── README.md
+```
 
 
 
