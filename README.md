@@ -77,7 +77,7 @@ industrial-forecasting-project/
 
 
 
-## 🚀 Démarrage rapide
+##  Démarrage rapide
 ```bash
 # 1) Créer l'environnement (ex. conda ou venv)
 python -m venv .venv && source .venv/bin/activate  # (Linux/Mac)
