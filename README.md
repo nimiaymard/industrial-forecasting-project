@@ -1,41 +1,80 @@
-# Analyse & Prévision de Données Industrielles
+# Analyse & Prévision de Données Industrielles (ARIMA, LSTM, Prophet) + POC Web Frontend en React
 
-Projet personnel prêt pour GitHub : **modélisation de séries temporelles (ARIMA, LSTM)** et **détection d’anomalies** pour des flux industriels (capteurs, production, consommation).
+Projet complet pour la modélisation de séries temporelles industrielles :
+prévision, détection d’anomalies, visualisation web et architecture modulaire.
 
-## ✨ Contenu
-- **ARIMA (statsmodels)** pour la prévision classique
-- **LSTM (PyTorch)** pour la prévision deep learning
-- **Détection d'anomalies** (IsolationForest + z-score robuste)
-- **Pipeline simple**: chargement → prétraitement → entraînement → évaluation → export
-- **Données synthétiques** reproductibles (pour tester sans données privées)
-- **Scripts CLI** reproductibles + **config YAML**
+##   Fonctionnalités principales
+- **Prévision** :
+ - ARIMA (statsmodels): baseline statistique rapide
+ - LSTM (PyTorch): modèle deep learning optimisé (normalisation, dropout, fenêtre temporelle)
+ - Prophet (Meta) : prévision avec saisonnalités multiples et robustesse
 
-## 📁 Arborescence
-```
+- **Détection d’anomalies** :
+ - IsolationForest
+ - Z-score robuste (MAD)
+
+- **Pipeline complet** :
+ - Chargement des données
+ - Nettoyage et interpolation
+ - Feature engineering
+ - Entraînement : sauvegarde modèle
+ - Prévision : export CSV
+ - Visualisation (Python + Frontend React)
+
+- **Frontend React / Vite :**
+ - Un prototype web simple permet de :
+  - charger les prévisions LSTM (CSV),
+  - visualiser les courbes (réel vs prédit),
+  - tester le modèle avant déploiement,
+  - intégrer facilement un futur backend Flask/FastAPI.
+
+##  Arborescence
+
 industrial-forecasting-project/
 ├── data/
-│   ├── raw/            # Fichiers bruts (synthetic.csv fourni)
-│   └── processed/      # Données nettoyées/features
-├── models/             # Modèles entraînés (.pkl/.pt)
-├── notebooks/          # (Option) analyses exploratoires
-├── scripts/            # Scripts CLI (train/eval/anomaly)
+│   ├── raw/               # Données originales
+│   └── processed/         # Données nettoyées, prévisions (.csv)
+│
+├── models/                # Modèles sauvegardés (.pkl)
+│
+├── notebooks/             # Analyse exploratoire 
+│
+├── scripts/               # Scripts CLI (train, eval, anomalies)
+│
 ├── src/industrial_forecasting/
 │   ├── __init__.py
 │   ├── data.py
 │   ├── features.py
 │   ├── evaluate.py
-│   ├── visualization.py
+│   ├── visualize_prophet.py
+│   ├── visualize_lstm.py
 │   ├── models/
-│   │   ├── arima.py
-│   │   └── lstm.py
+│   │     ├── arima.py
+│   │     ├── lstm.py
+│   │     └── prophet.py
 │   └── utils/
-│       ├── config.py
-│       └── paths.py
+│         ├── config.py
+│         └── paths.py
+│
+├── frontend/                     # Prototype web React
+│   ├── public/
+│   │     └── index.html
+│   ├── src/
+│   │     ├── App.jsx
+│   │     ├── components/
+│   │     │     └── ForecastChart.jsx
+│   │     ├── services/
+│   │     │     └── api.js
+│   │     └── styles/
+│   │           └── App.css
+│   └── package.json
+│
 ├── config.yaml
 ├── requirements.txt
 ├── Makefile
 └── README.md
-```
+
+
 
 ## 🚀 Démarrage rapide
 ```bash
@@ -63,20 +102,45 @@ python scripts/evaluate_forecasts.py --config config.yaml --model arima
 python scripts/evaluate_forecasts.py --config config.yaml --model lstm
 ```
 
-## ⚙️ Configuration (config.yaml)
+
+##  Configuration (config.yaml)
 - Chemins de fichiers, colonnes des données, fréquence temporelle
 - Paramètres ARIMA (p,d,q)
 - Hyperparamètres LSTM (fenêtre, hidden_size, lr, epochs)
 - Paramètres de détection d’anomalies
 
-## 🧪 Données
-Par défaut, **`data/raw/synthetic.csv`** contient un flux industriel synthétique (tendance + saisonnalité + bruit + anomalies injectées) pour tester l’end-to-end.
+##  Données
+Par défaut, **`data/raw/real.csv`** contient un flux industriel synthétique (tendance + saisonnalité + bruit + anomalies injectées) pour tester l’end-to-end.
 
-## 📝 Licence
+## Frontend React — Prototype Web
+1. Installer Node.js
+
+Si nécessaire : https://nodejs.org
+ (version LTS)
+
+2. Installer le frontend
+cd frontend
+npm install
+
+3. Lancer le prototype
+npm run dev
+
+
+Frontend accessible sur :  http://localhost:5173
+
+Fonction du frontend :
+
+- Charge le fichier forecast_lstm.csv depuis data/processed/
+- Trace le graphe réel vs prévisions LSTM via Chart.js
+- Composants React propres :
+- ForecastChart.jsx
+- api.js pour charger les données
+
+##  Licence
 MIT — libre d’utilisation à des fins d’apprentissage et démonstration.
 
 
-## 📦 Jeux de données réels (Open)
+##  Jeux de données réels (Open)
 - **SKAB (Skoltech Anomaly Benchmark)** — capteurs industriels avec anomalies étiquetées. Script: `python scripts/fetch_skab.py` → génère `data/raw/skab_single.csv`.
 - **NAB (Numenta Anomaly Benchmark)** — plus de 50 séries réelles/étiquetées. Script: `python scripts/fetch_nab.py` → copies dans `data/raw/nab/`.
 
@@ -90,7 +154,7 @@ data:
   train_ratio: 0.8
 ```
 
-## 📦 Jeux de données réels (sans Kaggle)
+## Jeux de données réels (sans Kaggle)
 - **NAB** (Numenta) – anomalies réelles : `python scripts/fetch_data.py --dataset nab`
 - **SKAB** (Skoltech) – capteurs banc d’essai : `python scripts/fetch_data.py --dataset skab`
 - **UCI SECOM** (semi-conducteurs) – process industriel tabulaire : `python scripts/fetch_data.py --dataset secom`
